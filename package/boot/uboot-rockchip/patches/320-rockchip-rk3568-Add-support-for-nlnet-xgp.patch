@@ -29,13 +29,14 @@
 +};
 --- /dev/null
 +++ b/arch/arm/dts/rk3568-nlnet-xgp.dts
-@@ -0,0 +1,460 @@
+@@ -0,0 +1,474 @@
 +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
 +
 +/dts-v1/;
 +#include <dt-bindings/gpio/gpio.h>
 +#include <dt-bindings/leds/common.h>
 +#include <dt-bindings/pinctrl/rockchip.h>
++#include <dt-bindings/input/linux-event-codes.h>
 +#include "rk3568.dtsi"
 +
 +/ {
@@ -49,6 +50,19 @@
 +
 +	chosen: chosen {
 +		stdout-path = "serial2:1500000n8";
++	};
++
++	adc-keys {
++		compatible = "adc-keys";
++		io-channels = <&saradc 0>;
++		io-channel-names = "buttons";
++		keyup-threshold-microvolt = <1750000>;
++
++		button-reset {
++			label = "reset";
++			linux,code = <KEY_RESTART>;
++			press-threshold-microvolt = <0>;
++		};
 +	};
 +
 +	leds {
@@ -492,7 +506,7 @@
 +};
 --- /dev/null
 +++ b/configs/nlnet-xgp-rk3568_defconfig
-@@ -0,0 +1,83 @@
+@@ -0,0 +1,84 @@
 +CONFIG_ARM=y
 +CONFIG_SKIP_LOWLEVEL_INIT=y
 +CONFIG_COUNTER_FREQUENCY=24000000
@@ -529,6 +543,7 @@
 +# CONFIG_SPL_SHARES_INIT_SP_ADDR is not set
 +CONFIG_SPL_STACK_R=y
 +CONFIG_SPL_ATF=y
++CONFIG_CMD_ADC=y
 +CONFIG_CMD_GPIO=y
 +CONFIG_CMD_GPT=y
 +CONFIG_CMD_I2C=y
