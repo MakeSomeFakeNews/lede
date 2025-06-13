@@ -62,6 +62,9 @@ jobs:
           ./scripts/feeds update -a
           ./scripts/feeds install -a
 
+      - name: configuration xgp config
+        run: cp custom_config/rk3568_xgp_config .config
+        
       - name: Generate configuration file
         run: make defconfig
 
